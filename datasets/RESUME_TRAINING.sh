@@ -1,0 +1,15 @@
+#!/bin/bash\n# Resume PRIMUS-Enhanced Cybersecurity Training\n# Resuming from iteration 800\n# Remaining iterations: 9200\n\ncd /Users/danielrodrigo/Workspace/PyScience/datasets && python3 -m mlx_lm lora \
+  --model /Users/danielrodrigo/Workspace/PyScience/datasets/mlx_models/tinyllama_mlx \
+  --data /Users/danielrodrigo/Workspace/PyScience/datasets/primus_training_FINAL \
+  --resume-adapter-file /Users/danielrodrigo/Workspace/PyScience/datasets/cybersecurity_finetuned_models/mlx_adapters_primus_ZERO_TRUNCATION_v1/0000800_adapters.safetensors \
+  --train \
+  --batch-size 4 \
+  --iters 10000 \
+  --learning-rate 1e-4 \
+  --steps-per-report 25 \
+  --steps-per-eval 100 \
+  --save-every 400 \
+  --max-seq-length 512 \
+  --num-layers 22 \
+  --adapter-path ./cybersecurity_finetuned_models/mlx_adapters_primus_ZERO_TRUNCATION_v1 \
+  --seed 42

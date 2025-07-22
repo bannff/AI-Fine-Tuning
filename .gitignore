@@ -1,0 +1,58 @@
+# Dataset files (too large for git)
+*.jsonl
+*.json
+*.tar.gz
+*.zip
+
+# Model files (too large for git)
+*.safetensors
+*.npz
+model.safetensors*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments (entire directories)
+.venv/
+venv/
+env/
+ENV/
+environments/
+
+# MLX outputs and logs
+*.log
+*.out
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Training checkpoints (keep structure but not the actual model files)
+cybersecurity_finetuned_models/*/adapters.safetensors
+cybersecurity_finetuned_models/*/0*.safetensors
+primus_training_FINAL/
+datasets/mlx_models/
+
+# Archive folders (keep structure in git)
+!datasets/archive/.gitkeep
+datasets/archive/*
+!datasets/archive/README.md
+
+# Temporary files
+*.tmp
+*.temp
