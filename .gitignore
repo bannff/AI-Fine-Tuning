@@ -56,3 +56,48 @@ datasets/archive/*
 # Temporary files
 *.tmp
 *.temp
+
+# Additional ML file patterns
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+*.bin
+*.pt
+*.pth
+
+# Model checkpoint patterns
+checkpoint-*/
+adapters.safetensors
+*.model
+
+# Dataset patterns (keep small samples, ignore large datasets)
+**/train.jsonl
+**/valid.jsonl
+**/test.jsonl
+**/train_*.jsonl
+**/valid_*.jsonl
+**/test_*.jsonl
+
+# Results and logs
+results/
+logs/
+runs/
+wandb/
+.tensorboard/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Benchmarking test data (large binary files)
+benchmarking/cybergym/oss-fuzz-data/
+benchmarking/*/data/
+benchmarking/*/outputs/
+**/test-data/
+**/fuzzing-data/

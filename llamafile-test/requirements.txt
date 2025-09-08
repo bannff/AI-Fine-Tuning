@@ -1,0 +1,29 @@
+# Core MLX and model handling
+mlx-lm>=0.20.0
+transformers>=4.30.0
+
+# GGUF conversion and testing
+llama-cpp-python>=0.2.0
+
+# Function calling and web tools
+requests>=2.28.0
+beautifulsoup4>=4.11.0
+validators>=0.20.0
+
+# Security and hashing tools
+hashlib
+ipaddress
+
+# Optional: Enhanced web search
+duckduckgo-search>=3.0.0
+
+# File handling
+pathlib
+json
+yaml
+
+# System utilities
+psutil>=5.9.0
+
+# Progress bars and UI
+tqdm>=4.64.0

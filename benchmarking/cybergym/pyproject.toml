@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cybergym"
+version = "0.1.0"
+description = "CyberGym: Large-Scale Cybersecurity Evaluation Framework"
+authors = [
+    { name = "CyberGym Team", email = "contact@cybergym.io" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "docker",
+    "requests"
+]
+
+[tool.setuptools.packages.find]
+where = ["cybergym"]
