@@ -27,12 +27,19 @@ else
     echo -e "${RED}FAILED${NC}"
 fi
 
-# 2. Check for Role Definitions
-echo -en "Checking for Kiro agent roles... "
-if [ "$(ls .kiro/agents/*.md 2>/dev/null | wc -l)" -ge 6 ]; then
-    echo -e "${GREEN}OK (6+ roles)${NC}"
+# 2.# Check for Agent Roles
+echo "Checking for Agent roles in .agents/roles..."
+if [ -d ".agents/roles" ]; then
+    ROLE_COUNT=$(ls -1 .agents/roles/*.md 2>/dev/null | wc -l)
+    if [ "$ROLE_COUNT" -ge 6 ]; then
+        echo "OK ($ROLE_COUNT roles)"
+    else
+        echo "FAILED (Missing roles, found $ROLE_COUNT)"
+        EXIT_CODE=1
+    fi
 else
-    echo -e "${RED}FAILED (Missing roles)${NC}"
+    echo "FAILED (Missing .agents/roles directory)"
+    EXIT_CODE=1
 fi
 
 # 3. Line Count Check (< 200 LOC)
