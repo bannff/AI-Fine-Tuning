@@ -1,0 +1,14 @@
+[2025-07-21 16:39:49] 🎯 Starting MLX cybersecurity fine-tuning pipeline: mlx_cybersec_20250721_163949
+[2025-07-21 16:39:49] 💻 Running on Apple Silicon with MLX optimization
+[2025-07-21 16:39:49] �️ Device: Device(gpu, 0)
+[2025-07-21 16:39:49] 📊 Active memory: 0.0 GB
+[2025-07-21 16:39:49] 🔄 Converting TinyLlama/TinyLlama-1.1B-Chat-v1.0 to MLX format...
+[2025-07-21 16:39:49] ✅ MLX model already exists, skipping conversion
+[2025-07-21 16:39:49] 📚 Preparing training data for MLX...
+[2025-07-21 16:39:49] ✅ Prepared 0 training samples for MLX
+[2025-07-21 16:39:49] 📚 Preparing validation data for MLX...
+[2025-07-21 16:39:49] ✅ Prepared 0 validation samples for MLX
+[2025-07-21 16:39:49] 🚀 Starting MLX training (Apple Silicon optimized)...
+[2025-07-21 16:39:49] 📊 Training configuration: --model models/tinyllama_heimdall_v1_merged_finetuned/mlx_model --data models/tinyllama_heimdall_v1_merged_finetuned/mlx_train_data.jsonl --train --lora-layers 16 --batch-size 8 --learning-rate 0.0001 --num-epochs 2 --steps-per-report 10 --steps-per-eval 50 --adapter-path models/tinyllama_heimdall_v1_merged_finetuned/adapters --save-every 200 --max-seq-length 512 --val-data models/tinyllama_heimdall_v1_merged_finetuned/mlx_val_data.jsonl
+[2025-07-21 16:39:49] ❌ Training error: 'tuple' object has no attribute 'parameters'
+[2025-07-21 16:39:49] ❌ Pipeline failed: 'tuple' object has no attribute 'parameters'

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussion
+    url: https://github.com/bannff/fine-tuning/discussions
+    about: Ask a question or share an idea.
+  - name: 📖 Wiki
+    url: https://github.com/bannff/fine-tuning/wiki
+    about: Read deep-dive documentation.

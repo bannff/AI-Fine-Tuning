@@ -1,103 +1,57 @@
-# Dataset files (too large for git)
-*.jsonl
-*.json
-*.tar.gz
-*.zip
-
-# Model files (too large for git)
-*.safetensors
-*.npz
-model.safetensors*
-
-# Python cache
+# Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-
-# Virtual environments (entire directories)
-.venv/
+*.py[cod]
+*$py.class
 venv/
+.env
+.venv
 env/
-ENV/
-environments/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# MLX outputs and logs
-*.log
-*.out
+# ML/Training
+/checkpoints/
+/models/
+/outputs/
+/data/
+*.bin
+*.pt
+*.safetensors
+*.pth
+*.joblib
+*.npy
+*.npz
+*.onnx
+*.weights
+/wandb/
+/mlruns/
+/runs/
+tensorboard/
+.ipynb_checkpoints
 
-# OS files
+# OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Training checkpoints (keep structure but not the actual model files)
-cybersecurity_finetuned_models/*/adapters.safetensors
-cybersecurity_finetuned_models/*/0*.safetensors
-primus_training_FINAL/
-datasets/mlx_models/
-
-# Archive folders (keep structure in git)
-!datasets/archive/.gitkeep
-datasets/archive/*
-!datasets/archive/README.md
-
-# Temporary files
-*.tmp
-*.temp
-
-# Additional ML file patterns
-*.pkl
-*.pickle
-*.h5
-*.hdf5
-*.bin
-*.pt
-*.pth
-
-# Model checkpoint patterns
-checkpoint-*/
-adapters.safetensors
-*.model
-
-# Dataset patterns (keep small samples, ignore large datasets)
-**/train.jsonl
-**/valid.jsonl
-**/test.jsonl
-**/train_*.jsonl
-**/valid_*.jsonl
-**/test_*.jsonl
-
-# Results and logs
-results/
-logs/
-runs/
-wandb/
-.tensorboard/
-
-# Build artifacts
-build/
-dist/
-*.egg-info/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Benchmarking test data (large binary files)
-benchmarking/cybergym/oss-fuzz-data/
-benchmarking/*/data/
-benchmarking/*/outputs/
-**/test-data/
-**/fuzzing-data/
+# Beads
+/.beads/backup/
+/.beads/dolt/
+/.beads/dolt-server.*

@@ -1,0 +1,15 @@
+# Beads Configuration
+# This file defines the repository-level settings for Beads.
+
+repo:
+  name: fine-tuning
+  description: Consolidated fine-tuning resources for SFT, PEFT, and LoRA styles.
+  owner: Daniel Rodrigo
+
+dolt:
+  remote: origin
+  branch: main
+
+features:
+  auto_sync: true
+  branch_awareness: true

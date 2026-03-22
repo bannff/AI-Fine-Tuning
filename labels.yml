@@ -1,0 +1,74 @@
+# Label Taxonomy for fine-tuning
+# Format: name, color, description
+
+# Status Labels
+- name: status:todo
+  color: fbca04
+  description: Not started
+
+- name: status:in-progress
+  color: fbca04
+  description: Work in progress
+
+- name: status:blocked
+  color: d73a4a
+  description: Blocked by dependency
+
+- name: status:review
+  color: 0e8a16
+  description: Ready for review
+
+- name: status:done
+  color: 0e8a16
+  description: Completed
+
+# Type Labels
+- name: type:bug
+  color: d73a4a
+  description: Bug fix
+
+- name: type:feature
+  color: 0075ca
+  description: New feature
+
+- name: type:doc
+  color: 0075ca
+  description: Documentation
+
+- name: type:refactor
+  color: 5319e7
+  description: Refactoring
+
+- name: type:test
+  color: 5319e7
+  description: Testing / Benchmarking
+
+# Domain Labels
+- name: domain:sft
+  color: e4e669
+  description: Supervised Fine-Tuning
+
+- name: domain:lora
+  color: e4e669
+  description: Low-Rank Adaptation
+
+- name: domain:peft
+  color: e4e669
+  description: Parameter-Efficient Fine-Tuning
+
+- name: domain:infra
+  color: ededed
+  description: Infrastructure / Tooling
+
+# Agent Labels
+- name: agent:meta-architect
+  color: d4c5f9
+  description: Work owned by Meta-Architect
+
+- name: agent:implementer
+  color: d4c5f9
+  description: Work owned by Implementer
+
+- name: agent:qa-tester
+  color: d4c5f9
+  description: Work owned by QA-Tester

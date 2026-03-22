@@ -1,0 +1,21 @@
+#!/bin/zsh
+# Quick-start commands for fine-tuning
+
+echo "🚀 Phi-3-mini Fine-Tuning Quick Reference"
+echo ""
+echo "TEST MODE (10-20 minutes, 50 records):"
+echo "  cd /Users/danielrodrigo/Workspace/models/Fine-Tuning/peft/lora"
+echo "  python finetune_tinyllama_heimdall.py --test"
+echo ""
+echo "QUICK TRAINING (45-90 minutes, 500 records):"
+echo "  python finetune_tinyllama_heimdall.py"
+echo ""
+echo "FULL TRAINING (12+ hours, 148,778 records):"
+echo "  python finetune_tinyllama_heimdall.py --train-size 148778"
+echo ""
+echo "CUSTOM (adjust train-size):"
+echo "  python finetune_tinyllama_heimdall.py --train-size 1000"
+echo ""
+echo "OUTPUT: /Volumes/Crucial X9/ai-models/phi3_heimdall_7variants_finetuned/"
+echo ""
+echo "📖 See TRAINING_CONFIG_DETAILS.md for full documentation"

@@ -1,7 +1,0 @@
-README.md
-pyproject.toml
-cybergym/cybergym.egg-info/PKG-INFO
-cybergym/cybergym.egg-info/SOURCES.txt
-cybergym/cybergym.egg-info/dependency_links.txt
-cybergym/cybergym.egg-info/requires.txt
-cybergym/cybergym.egg-info/top_level.txt
