@@ -15,15 +15,19 @@ The stable is organized into three primary layers, ensuring a separation of conc
 - **SFT**: Supervised Fine-Tuning for instruction-following.
 - **DPO**: Direct Preference Optimization for human-aligned outputs.
 
-### 2. PEFT & LoRA (`peft/`)
+### 2. PEFT & Quantization (`peft/`)
 - **LoRA**: Parameter-efficient adaptation via low-rank matrices.
-- **QLoRA**: 4-bit quantized training for consumer-grade hardware.
-- **Adapters**: Reusable model weights for skills and styles.
+- **MLX QLoRA**: 4-bit quantized matrices *hyper-optimized* for Apple Silicon (M-Series).
+- **Runtime Adapters**: Highly modular `mlx_lm` abstractions enabling instant swap-in capabilities.
 
 ### 3. Agent Infrastructure (`.agents/`)
-- **AI-Native Steering**: Optimized for operation by autonomous agents.
+- **AI-Native Steering**: Optimized for operation by autonomous programming agents.
 - **Beads**: Local-first, git-integrated issue tracking.
-- **Agent Roles**: 6 specialized definitions (Meta-Architect to Doc-Writer) in `.agents/roles/`.
+- **Roles**: 6 specialized cognitive definitions (Meta-Architect to Doc-Writer) mapped in `.agents/roles/`.
+
+### 4. Quality Assurance (`tests/`)
+- **Hypothesis**: Property-based randomized data generation.
+- **PyTest**: Ensures pure functions and dynamic MLX JSONL chunking adhere to mathematical bounds.
 
 ---
 
