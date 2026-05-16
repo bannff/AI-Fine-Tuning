@@ -3,14 +3,20 @@
 PHI-3 Cybersecurity LoRA Chat Interface
 Interactive chat with fine-tuned cybersecurity model using MLX-LM best practices
 """
+import argparse
 import sys
 from pathlib import Path
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Interactive chat with LoRA model")
+    parser.add_argument("--adapter-path", type=str, default="adapters", help="Path to trained adapters")
+    parser.add_argument("--model", type=str, default="microsoft/Phi-3-mini-128k-instruct", help="Base model identifier")
+    args = parser.parse_args()
+
     # Use trained adapters location
-    ADAPTER_PATH = "/Volumes/Crucial X9/ai-models/PHI-3.5-cybersec-finetune/adapters"
-    BASE_MODEL = "/Volumes/Crucial X9/ai-models/Phi-3-mini-128k-instruct-mlx"
+    ADAPTER_PATH = args.adapter_path
+    BASE_MODEL = args.model
 
     if not Path(ADAPTER_PATH).exists():
         print("❌ No trained adapters found at:")

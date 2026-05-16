@@ -1,4 +1,4 @@
-model: "/Volumes/Crucial X9/ai-models/tinyllama_mlx"
+model: "tinyllama/TinyLlama-1.1B-Chat-v1.0"
 train: true
 fine_tune_type: lora
 optimizer: adamw

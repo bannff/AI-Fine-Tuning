@@ -6,13 +6,13 @@ This directory contains full Supervised Fine-Tuning (SFT) scripts for TinyLlama 
 
 - **`finetune_tinyllama_full_sft.py`** - Full SFT for TinyLlama-1.1B (regular bfloat16, 2.0 GB)
 - **`finetune_phi3_full_sft.py`** - Full SFT for Phi-3-mini (regular bfloat16, 7.1 GB)
-- **Dataset** - Heimdall cybersecurity data split into train/valid/test at `/Volumes/Crucial X9/ai-models/heimdall_sft_data/`
+- **Dataset** - Heimdall cybersecurity data split into train/valid/test at `data/heimdall_sft_data/`
 
 ## Key Facts
 
 **Your Models (Verified)**
-- TinyLlama: `/Volumes/Crucial X9/ai-models/tinyllama_mlx` (2.0 GB, bfloat16, **FULL PRECISION**)
-- Phi-3: `/Volumes/Crucial X9/ai-models/Phi-3-mini-128k-instruct` (7.1 GB, bfloat16, **FULL PRECISION**)
+- TinyLlama: `tinyllama_mlx` (2.0 GB, bfloat16, **FULL PRECISION**)
+- Phi-3: `Phi-3-mini-128k-instruct` (7.1 GB, bfloat16, **FULL PRECISION**)
 
 **Memory Requirements**
 - TinyLlama full training: ~8 GB (✅ Fits on Mac 20GB)
@@ -83,7 +83,7 @@ If training loss becomes NaN during validation, try:
 ## Output Structure
 
 ```
-/Volumes/Crucial X9/ai-models/
+outputs/
 ├── tinyllama_heimdall_full_sft/
 │   ├── adapters.safetensors       # Fine-tuned weights
 │   ├── adapter_config.json         # Training config

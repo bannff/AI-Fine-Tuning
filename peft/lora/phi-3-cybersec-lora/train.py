@@ -12,29 +12,28 @@ from pathlib import Path
 
 # Project configuration
 PROJECT_ROOT = Path(__file__).parent
-MODELS_DIR = PROJECT_ROOT
-BASE_MODEL = "/Volumes/Crucial X9/ai-models/Phi-3-mini-128k-instruct-mlx"
-DATASET_DIR = "../../../../../datasets/cybersec_data"
-ADAPTER_OUTPUT = MODELS_DIR / "adapters"
+ADAPTER_OUTPUT = PROJECT_ROOT / "adapters"
 
 
-def validate_paths():
+def validate_paths(model_path, data_path):
     """Validate all required paths exist"""
-    if not os.path.exists(BASE_MODEL):
-        raise FileNotFoundError(f"Base model not found: {BASE_MODEL}")
-    if not os.path.exists(DATASET_DIR):
-        raise FileNotFoundError(f"Dataset not found: {DATASET_DIR}")
-    if not os.path.exists(f"{DATASET_DIR}/train.jsonl"):
-        raise FileNotFoundError(f"Training data not found: {DATASET_DIR}/train.jsonl")
-    if not os.path.exists(f"{DATASET_DIR}/valid.jsonl"):
-        raise FileNotFoundError(f"Validation data not found: {DATASET_DIR}/valid.jsonl")
+    # Note: model_path could be a HF ID, so we only check if it's a local path
+    if os.path.exists(model_path):
+        print(f"✅ Local model found: {model_path}")
+    
+    if not os.path.exists(data_path):
+        raise FileNotFoundError(f"Dataset not found: {data_path}")
+    if not os.path.exists(f"{data_path}/train.jsonl"):
+        raise FileNotFoundError(f"Training data not found: {data_path}/train.jsonl")
+    if not os.path.exists(f"{data_path}/valid.jsonl"):
+        raise FileNotFoundError(f"Validation data not found: {data_path}/valid.jsonl")
 
 
-def create_config_file():
+def create_config_file(model_path, data_path):
     """Create MLX-LM training configuration"""
     config = {
-        "model": BASE_MODEL,
-        "data": str(DATASET_DIR),
+        "model": model_path,
+        "data": str(data_path),
         "train": True,
         "batch_size": 2,
         "iters": 1000,
@@ -51,7 +50,7 @@ def create_config_file():
         "fine_tune_type": "lora",
     }
 
-    config_path = MODELS_DIR / "lora_config.json"
+    config_path = PROJECT_ROOT / "lora_config.json"
     with open(config_path, "w") as f:
         json.dump(config, f, indent=2)
 
@@ -60,6 +59,8 @@ def create_config_file():
 
 def main():
     parser = argparse.ArgumentParser(description="PHI-3 Cybersecurity LoRA Training")
+    parser.add_argument("--model", type=str, default="microsoft/Phi-3-mini-128k-instruct", help="Base model identifier or path")
+    parser.add_argument("--data", type=str, default="data", help="Path to prepared MLX data directory")
     parser.add_argument(
         "--test", action="store_true", help="Run test with 20 iterations"
     )
@@ -70,14 +71,14 @@ def main():
     print("=" * 60)
 
     try:
-        validate_paths()
+        validate_paths(args.model, args.data)
         print("✅ All paths validated")
 
         # Create directories
         ADAPTER_OUTPUT.mkdir(parents=True, exist_ok=True)
 
         # Create config
-        config_path = create_config_file()
+        config_path = create_config_file(args.model, args.data)
         print(f"✅ Config created: {config_path}")
 
         # Build command
@@ -87,9 +88,9 @@ def main():
             "mlx_lm",
             "lora",
             "--model",
-            BASE_MODEL,
+            args.model,
             "--data",
-            str(DATASET_DIR),
+            str(args.data),
             "--train",
             "--batch-size",
             "2",
@@ -123,9 +124,9 @@ def main():
         iterations = "20" if args.test else "1000"
 
         print(f"\n🎯 Starting {mode} training ({iterations} iterations)")
-        print(f"📊 Dataset: {DATASET_DIR}")
+        print(f"📊 Dataset: {args.data}")
         print(f"🔧 Adapters: {ADAPTER_OUTPUT}")
-        print(f"💾 Base model: {BASE_MODEL}")
+        print(f"💾 Base model: {args.model}")
         print("\n" + "=" * 60)
 
         # Execute training
