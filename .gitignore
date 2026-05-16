@@ -55,3 +55,6 @@ Thumbs.db
 /.beads/backup/
 /.beads/dolt/
 /.beads/dolt-server.*
+
+# Testing
+.hypothesis/

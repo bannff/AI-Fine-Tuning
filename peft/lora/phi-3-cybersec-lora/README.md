@@ -89,8 +89,8 @@ import mlx.core as mx
 
 # Load base model with LoRA adapters
 model, tokenizer = load(
-    "/Volumes/Crucial X9/ai-models/Phi-3-mini-128k-instruct-mlx", 
-    adapter_path="/Volumes/Crucial X9/ai-models/PHI-3.5-cybersec-finetune/adapters"
+    "microsoft/Phi-3-mini-128k-instruct", 
+    adapter_path="adapters"
 )
 
 # Enhanced sampler with best practices
