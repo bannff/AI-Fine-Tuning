@@ -58,3 +58,33 @@ Thumbs.db
 
 # Testing
 .hypothesis/
+
+# Secrets / credentials (defense-in-depth)
+.env.*
+!.env.example
+.envrc
+.netrc
+.npmrc
+.pypirc
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+*.crt
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+secrets.yaml
+secrets.yml
+credentials.json
+service-account*.json
+.aws/
+.ssh/
+.docker/config.json
+
+# ML auth/cache locations that can carry tokens
+.huggingface/
+.cache/huggingface/
