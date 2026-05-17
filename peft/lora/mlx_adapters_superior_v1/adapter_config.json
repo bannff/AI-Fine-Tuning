@@ -1,8 +1,8 @@
 {
     "adapter_path": "./cybersecurity_finetuned_models/mlx_adapters_superior_v1",
     "batch_size": 4,
-    "config": "/Users/danielrodrigo/Workspace/PyScience/datasets/mlx_cybersec_training_config.yaml",
-    "data": "/Users/danielrodrigo/Workspace/PyScience/datasets/superior_cybersec_training_data",
+    "config": "mlx_cybersec_training_config.yaml",
+    "data": null,
     "fine_tune_type": "lora",
     "grad_checkpoint": true,
     "iters": 3000,
@@ -15,7 +15,7 @@
     "lr_schedule": null,
     "mask_prompt": false,
     "max_seq_length": 512,
-    "model": "/Users/danielrodrigo/Workspace/PyScience/datasets/mlx_models/tinyllama_mlx",
+    "model": null,
     "num_layers": 16,
     "optimizer": "adamw",
     "optimizer_config": {
