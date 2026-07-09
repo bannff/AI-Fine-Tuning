@@ -1,8 +1,8 @@
-# 🎯 Fine-Tuning Stable
+# 🎯 Fine-Tuning
 
 > **Consolidated, AI-Native, and Professional Fine-Tuning Resources**
 
-Managed by **Daniel Rodrigo**, this repository is the definitive source for fine-tuning Large Language Models (LLMs) across diverse styles and frameworks. Built with a focus on **Agent-Readiness** and **Clean Architecture**, it follows the high engineering standards of the `python-factory` ecosystem.
+This repository is for fine-tuning Language Models (LLMs) across diverse styles and frameworks. Built with a focus on **Agent-Readiness** and **Clean Architecture**, it offers full fine tuning options and PEFT (QLoRA/LoRA) options. 
 
 ---
 
