@@ -1,6 +1,8 @@
 version: 2
 updates:
-  - package-ecosystem: "pip"
+  # Reads pyproject.toml and uv.lock. Previously declared with no manifest in the
+  # repository for it to parse.
+  - package-ecosystem: "uv"
     directory: "/"
     schedule:
       interval: "weekly"

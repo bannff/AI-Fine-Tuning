@@ -1,0 +1,141 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "finetune"
+version = "0.2.0"
+description = "LoRA / DoRA / QLoRA / full fine-tuning across PyTorch and MLX backends, with one config surface."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Daniel Rodrigo" }]
+keywords = ["lora", "dora", "qlora", "peft", "fine-tuning", "mlx", "transformers", "trl"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# The core package is deliberately import-light: dataset validation, splitting,
+# config resolution and the capability matrix need nothing but PyYAML. Training
+# backends are optional extras and are imported lazily, so `import finetune`
+# stays cheap and the unit suite runs without a multi-gigabyte install.
+dependencies = ["pyyaml>=6.0"]
+
+[project.optional-dependencies]
+# PyTorch backend: TRL supplies SFT prompt masking / packing, PEFT the adapters.
+torch = [
+  "torch>=2.4",
+  "transformers>=4.56.2",
+  "peft>=0.15",
+  "trl>=0.21",
+  "datasets>=4.0",
+  "accelerate>=1.4",
+]
+# Apple Silicon backend. mlx has no Linux wheels, so it must stay optional.
+apple = [
+  "mlx>=0.29",
+  "mlx-lm>=0.28",
+]
+all = ["finetune[torch,apple]"]
+
+[project.scripts]
+finetune = "finetune.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/bannff/AI-Fine-Tuning"
+Source = "https://github.com/bannff/AI-Fine-Tuning"
+Issues = "https://github.com/bannff/AI-Fine-Tuning/issues"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0",
+  "hypothesis>=6.100",
+  "ruff>=0.9",
+  "mypy>=1.11",
+  "types-pyyaml>=6.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/finetune"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+  "E",    # pycodestyle
+  "F",    # pyflakes
+  "I",    # isort
+  "UP",   # pyupgrade
+  "B",    # bugbear
+  "SIM",  # simplify
+  "RUF",  # ruff-specific
+  "PTH",  # use pathlib
+  "S",    # bandit
+]
+# S603/S607: we intentionally shell out to the `mlx_lm` module with a fully
+# validated, non-shell argv. The construction is unit-tested in
+# tests/test_mlx_backend.py rather than suppressed blindly at each call site.
+ignore = ["S603", "S607"]
+
+[tool.ruff.lint.per-file-ignores]
+# S101: asserts are the point of a test.
+# S106: bandit reads tokenizer kwargs like `pad_token="<pad>"` as passwords.
+# S311: tests compare seeded PRNG output; reproducibility is what is under test.
+"tests/*" = ["S101", "S106", "S311"]
+
+[tool.mypy]
+# Deliberately not pinning python_version: mypy would then parse installed
+# third-party stubs under 3.10 rules and choke on newer syntax inside them.
+# The 3.10 floor is enforced by ruff's target-version instead.
+files = ["src", "tests"]
+strict = true
+warn_unreachable = true
+# Optional backends are absent in the light CI job; their absence is handled at
+# runtime by capabilities.py, so unresolved imports there are expected.
+[[tool.mypy.overrides]]
+module = [
+  "mlx.*",
+  "mlx_lm.*",
+  "trl.*",
+  "peft.*",
+  "transformers.*",
+  "datasets.*",
+  "torch.*",
+  "tokenizers.*",
+]
+ignore_missing_imports = true
+# These ship partial type information and re-export their public API without
+# declaring __all__, so a strict reader sees `trl.SFTTrainer` as private.
+implicit_reexport = true
+
+# Calls into the ML libraries land in untyped functions. Relaxed only in the
+# modules that actually touch them, so the rest of the package stays strict.
+[[tool.mypy.overrides]]
+module = [
+  "finetune.backends._torch_args",
+  "finetune.backends.torch_backend",
+  "finetune.inference",
+  "tests.conftest",
+  "tests.test_torch_backend",
+  "tests.test_smoke_training",
+]
+disallow_untyped_calls = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+markers = [
+  "slow: exercises a real training step; needs the torch or apple extra",
+]
+filterwarnings = ["ignore::DeprecationWarning"]

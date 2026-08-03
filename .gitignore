@@ -5,13 +5,13 @@ __pycache__/
 venv/
 .env
 .venv
+.venv*/
 env/
 build/
 develop-eggs/
 dist/
 downloads/
 eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -21,11 +21,22 @@ wheels/
 .installed.cfg
 *.egg
 
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
 # ML/Training
+# This repository ships code only. Weights, adapters, prepared datasets and
+# training logs belong in releases or on the Hub -- scripts/verify_repo.sh
+# rejects tracked files over 512 KB.
 /checkpoints/
 /models/
 /outputs/
 /data/
+/adapters/
+*.jsonl
+!tests/**/*.jsonl
 *.bin
 *.pt
 *.safetensors

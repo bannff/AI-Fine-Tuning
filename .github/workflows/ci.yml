@@ -1,0 +1,128 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  UV_VERSION: "0.9.9"
+
+jobs:
+  lint:
+    name: lint and types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+      - run: uv sync --locked --extra torch
+      - name: ruff check
+        run: uv run ruff check .
+      - name: ruff format
+        run: uv run ruff format --check .
+      - name: mypy
+        run: uv run mypy
+
+  test-core:
+    # The core package depends only on PyYAML, so this job proves that dataset
+    # validation, splitting, config resolution and the capability matrix work
+    # with no ML dependencies installed at all -- and that `import finetune`
+    # does not secretly need them.
+    name: core (py${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+      - run: uv sync --locked --no-extra torch --no-extra apple
+        env:
+          UV_PYTHON: ${{ matrix.python }}
+      - name: assert the core install stays light
+        run: |
+          uv run python - <<'PY'
+          import sys
+          import finetune  # noqa: F401
+          heavy = {"torch", "transformers", "trl", "peft", "mlx", "mlx_lm"}
+          leaked = heavy & set(sys.modules)
+          assert not leaked, f"importing finetune pulled in {leaked}"
+          print("core import is clean")
+          PY
+      - name: unit tests
+        run: uv run pytest -q -m "not slow"
+
+  test-torch:
+    # Runs the real training smoke tests. They use a tiny model built on disk by
+    # tests/conftest.py, so this job needs no network access to the model hub.
+    name: torch backend (py${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+      - run: uv sync --locked --extra torch
+        env:
+          UV_PYTHON: ${{ matrix.python }}
+      - name: full suite including training smoke tests
+        run: uv run pytest -q
+        env:
+          # Keep the CPU runner from thrashing on a model this small.
+          OMP_NUM_THREADS: "2"
+          TOKENIZERS_PARALLELISM: "false"
+
+  resolution-highest:
+    # The lock file guarantees reproducibility; this job is the early warning
+    # that an upstream release has broken the declared floors. Advisory only.
+    name: newest dependencies (advisory)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+      - run: uv sync --upgrade --resolution highest --extra torch
+      - run: uv run pytest -q
+      - run: uv run pip list
+
+  verify:
+    name: repo conventions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: verify_repo.sh must pass here
+        run: bash scripts/verify_repo.sh
+      - name: verify_repo.sh must fail on an empty tree
+        # Guards the check itself. It previously assigned an exit code and never
+        # used it, so it reported failures and still exited 0.
+        run: |
+          mkdir -p /tmp/empty && cd /tmp/empty && git init -q .
+          cp "$GITHUB_WORKSPACE/scripts/verify_repo.sh" .
+          if bash verify_repo.sh; then
+            echo "::error::verify_repo.sh passed on an empty repository"
+            exit 1
+          fi
+          echo "correctly failed on an empty repository"

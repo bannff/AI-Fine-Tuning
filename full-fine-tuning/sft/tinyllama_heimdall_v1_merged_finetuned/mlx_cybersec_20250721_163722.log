@@ -1,7 +1,0 @@
-[2025-07-21 16:37:22] 🎯 Starting MLX cybersecurity fine-tuning pipeline: mlx_cybersec_20250721_163722
-[2025-07-21 16:37:22] 💻 Running on Apple Silicon with MLX optimization
-[2025-07-21 16:37:22] �️ Device: Device(gpu, 0)
-[2025-07-21 16:37:22] 📊 Active memory: 0.0 GB
-[2025-07-21 16:37:22] 🔄 Converting TinyLlama/TinyLlama-1.1B-Chat-v1.0 to MLX format...
-[2025-07-21 16:37:22] ❌ Error converting model: Cannot save to the path models/tinyllama_heimdall_v1_merged_finetuned/mlx_model as it already exists. Please delete the file/directory or specify a new path to save to.
-[2025-07-21 16:37:22] ❌ Pipeline failed: Cannot save to the path models/tinyllama_heimdall_v1_merged_finetuned/mlx_model as it already exists. Please delete the file/directory or specify a new path to save to.

@@ -19,12 +19,18 @@ Fixes #
 
 <!-- Check all that apply -->
 
-- [ ] Code follows the repository conventions (see README.md and .agents/steering/dev-principles.md)
-- [ ] No cross-imports between different fine-tuning styles
-- [ ] All files remain under 200 lines
-- [ ] Scripts are modularified following SRP
-- [ ] Documentation updated (if applicable)
-- [ ] `scripts/verify_repo.sh` passes
+- [ ] Follows the conventions in `.agents/steering/dev-principles.md`
+- [ ] `uv run ruff check .` and `uv run ruff format --check .` pass
+- [ ] `uv run mypy` passes
+- [ ] `uv run pytest` passes
+- [ ] `bash scripts/verify_repo.sh` passes
+- [ ] Every file in `src/` is still under 200 lines
+- [ ] No new module is named after a package it imports
+- [ ] Core stays import-light: nothing heavy imported at module scope
+- [ ] If a method or backend changed: `capabilities.py` and the README support
+      table agree
+- [ ] If a default changed: `docs/lora-practice.md` explains why, with a source
+- [ ] No weights, adapters, checkpoints or logs added to the repository
 
 ## Type of Change
 

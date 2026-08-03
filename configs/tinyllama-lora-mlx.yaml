@@ -1,0 +1,41 @@
+# LoRA on TinyLlama via MLX (Apple Silicon).
+#
+# Run:
+#   finetune prepare-data your-data.jsonl data/tinyllama
+#   finetune plan  configs/tinyllama-lora-mlx.yaml
+#   finetune train configs/tinyllama-lora-mlx.yaml
+#
+# Relative paths resolve against this file's directory, not the working
+# directory, so the config works from anywhere in the repo.
+
+model: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+method: lora
+backend: mlx
+
+data_dir: ../data/tinyllama
+output_dir: ../outputs/tinyllama-lora-mlx
+
+adapter:
+  rank: 16
+  # Kept independent of rank on purpose. `alpha = 2 * rank` is folklore; holding
+  # alpha fixed lets you change rank without re-tuning the learning rate.
+  alpha: 32
+  dropout: 0.0
+  # Every linear layer, MLP included. Restricting this to attention projections
+  # underperforms at equal parameter count -- see docs/lora-practice.md.
+  target_modules: all-linear
+  num_layers: -1
+
+training:
+  batch_size: 4
+  gradient_accumulation_steps: 2   # effective batch 8, comfortably under 32
+  iters: 600
+  learning_rate: 2.0e-4            # omit to take the method default
+  max_seq_length: 1024
+  seed: 42
+  mask_prompt: true                # loss on the assistant turn only
+  grad_checkpoint: false
+  steps_per_report: 10
+  steps_per_eval: 100
+  save_every: 100
+  val_batches: 25
