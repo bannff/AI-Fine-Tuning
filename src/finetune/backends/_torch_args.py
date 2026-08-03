@@ -56,6 +56,32 @@ def sft_config_cls() -> type:
     return SFTConfig
 
 
+def precision_kwargs() -> dict[str, Any]:
+    """Resolve mixed precision and device placement from actual hardware.
+
+    This cannot be left to the defaults. TRL's ``SFTConfig`` sets ``bf16=True``,
+    and transformers then raises "Your setup doesn't support bf16/gpu" on any
+    machine without a bf16-capable accelerator -- so a CPU-only box fails before
+    training starts. Apple Silicon hides the problem, because MPS satisfies the
+    check while CPU-only Linux does not.
+
+    bf16 is requested only where it is actually supported. Everywhere else the
+    run is fp32, which is slower but correct, and ``use_cpu`` is set explicitly
+    when there is no accelerator at all.
+    """
+    import torch
+
+    if torch.cuda.is_available():
+        from transformers.utils import is_torch_bf16_gpu_available
+
+        bf16 = bool(is_torch_bf16_gpu_available())
+        # Pre-Ampere CUDA has no bf16; fp16 is the available alternative there.
+        return {"bf16": bf16, "fp16": not bf16}
+    if torch.backends.mps.is_available():
+        return {"bf16": False, "fp16": False}
+    return {"use_cpu": True, "bf16": False, "fp16": False}
+
+
 def sft_kwargs(config: RunConfig) -> dict[str, Any]:
     """Build ``SFTConfig`` kwargs, filtered to fields the installed TRL accepts.
 
@@ -87,6 +113,7 @@ def sft_kwargs(config: RunConfig) -> dict[str, Any]:
         desired["max_steps"] = config.training.iters
     if config.training.epochs is not None:
         desired["num_train_epochs"] = config.training.epochs
+    desired.update(precision_kwargs())
     return filter_to_dataclass(desired, sft_config_cls())
 
 

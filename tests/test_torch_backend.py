@@ -141,6 +141,62 @@ def test_sft_config_actually_constructs(data_dir: Path, tmp_path: Path) -> None:
     assert config.output_dir == str(tmp_path / "out")
 
 
+# ------------------------------------------------------------------- precision
+#
+# TRL defaults SFTConfig to bf16=True, and transformers then raises
+# "Your setup doesn't support bf16/gpu" on any machine without a bf16-capable
+# accelerator. That shipped broken: it passed on Apple Silicon, where MPS
+# satisfies the check, and failed on every CPU-only box including CI.
+#
+# Parametrised rather than hardware-gated so all three branches are covered on
+# whatever machine happens to run the suite.
+
+
+@requires_trl
+@pytest.mark.parametrize(
+    ("cuda", "bf16_supported", "mps", "expected"),
+    [
+        (True, True, False, {"bf16": True, "fp16": False}),
+        (True, False, False, {"bf16": False, "fp16": True}),
+        (False, False, True, {"bf16": False, "fp16": False}),
+        (False, False, False, {"use_cpu": True, "bf16": False, "fp16": False}),
+    ],
+    ids=["cuda-ampere", "cuda-pre-ampere", "apple-mps", "cpu-only"],
+)
+def test_precision_follows_available_hardware(
+    monkeypatch: pytest.MonkeyPatch,
+    cuda: bool,
+    bf16_supported: bool,
+    mps: bool,
+    expected: dict[str, bool],
+) -> None:
+    import torch
+    import transformers.utils
+
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: cuda)
+    monkeypatch.setattr(torch.backends.mps, "is_available", lambda: mps)
+    monkeypatch.setattr(transformers.utils, "is_torch_bf16_gpu_available", lambda: bf16_supported)
+
+    assert torch_args.precision_kwargs() == expected
+
+
+@requires_trl
+def test_cpu_only_config_constructs(
+    monkeypatch: pytest.MonkeyPatch, data_dir: Path, tmp_path: Path
+) -> None:
+    """The regression CI caught: SFTConfig must build with no accelerator at all."""
+    import torch
+    from trl import SFTConfig
+
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+    monkeypatch.setattr(torch.backends.mps, "is_available", lambda: False)
+
+    config = SFTConfig(**torch_args.sft_kwargs(build(data_dir, tmp_path)))
+
+    assert config.use_cpu is True
+    assert config.bf16 is False
+
+
 @requires_trl
 def test_iters_and_epochs_map_to_different_trl_fields(data_dir: Path, tmp_path: Path) -> None:
     steps = torch_args.sft_kwargs(build(data_dir, tmp_path, training=TrainingConfig(iters=42)))

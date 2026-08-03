@@ -120,6 +120,33 @@ def test_training_runs_without_use_mps_device(
 
 @pytest.mark.slow
 @requires_trl
+def test_trains_with_no_accelerator_at_all(
+    monkeypatch: pytest.MonkeyPatch, tiny_model: Path, chat_dataset: Path, tmp_path: Path
+) -> None:
+    """CPU-only must work. This is the regression CI caught on first run.
+
+    TRL defaults ``SFTConfig`` to ``bf16=True``, and transformers then rejects it
+    with "Your setup doesn't support bf16/gpu" wherever no bf16-capable
+    accelerator exists. Every local run passed because MPS satisfies that check,
+    so the failure only appeared on a CPU-only Linux runner.
+
+    Forcing both accelerators off reproduces that environment on any machine.
+    """
+    import torch
+
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+    monkeypatch.setattr(torch.backends.mps, "is_available", lambda: False)
+
+    backend = get_backend(Backend.TORCH)
+    config = run_config(tiny_model, chat_dataset, tmp_path / "out")
+    result = backend.train(config)
+
+    assert result.succeeded
+    assert (config.output_dir / "adapter_config.json").is_file()
+
+
+@pytest.mark.slow
+@requires_trl
 def test_loss_is_finite_so_padding_is_masked(
     tiny_model: Path, chat_dataset: Path, tmp_path: Path
 ) -> None:
