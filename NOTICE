@@ -1,10 +1,17 @@
-Fine-Tuning Stable
-Copyright (c) 2025 Daniel Rodrigo. All rights reserved.
+finetune
+Copyright (c) 2025 Daniel Rodrigo
 
-This software is licensed under the Business Source License 1.1 (BSL 1.1).
-See the LICENSE file for the full license text.
+Licensed under the MIT License. See the LICENSE file for the full text.
 
-The Licensed Work will be made available under the Apache License, Version 2.0
-on the Change Date specified in the LICENSE file.
+This project builds on the following open-source work:
 
-For commercial licensing inquiries, contact: [email]
+  mlx and mlx-lm     Apple Inc., MIT License
+  transformers       Hugging Face, Apache License 2.0
+  trl                Hugging Face, Apache License 2.0
+  peft               Hugging Face, Apache License 2.0
+  datasets           Hugging Face, Apache License 2.0
+  accelerate         Hugging Face, Apache License 2.0
+  torch              PyTorch contributors, BSD-3-Clause
+
+Configuration defaults follow published research; see docs/lora-practice.md for
+the sources.

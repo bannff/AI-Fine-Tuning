@@ -1,5 +1,9 @@
 # finetune
 
+[![CI](https://github.com/bannff/AI-Fine-Tuning/actions/workflows/ci.yml/badge.svg)](https://github.com/bannff/AI-Fine-Tuning/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 Fine-tune causal language models with LoRA, DoRA, QLoRA or full-parameter
 updates, across two backends, from one config file.
 
@@ -212,8 +216,11 @@ repository and once against an empty one, to confirm it can still fail.
 This repository ships code only. Model weights, adapters and training logs belong
 in releases or on the Hub.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Short version: run the five gate commands
+above before opening a PR.
+
 ## License
 
-Business Source License 1.1. Source-available, not open source: production use is
-not granted before the change date. Converts to Apache 2.0 on 2030-03-03. See
-[LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE) and [NOTICE](NOTICE).

@@ -42,6 +42,7 @@ REQUIRED_FILES=(
   LICENSE
   NOTICE
   README.md
+  CONTRIBUTING.md
   pyproject.toml
   uv.lock
   .gitignore
