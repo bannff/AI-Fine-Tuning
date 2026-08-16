@@ -37,7 +37,7 @@ torch = [
   "torch>=2.4",
   "transformers>=4.56.2",
   "peft>=0.15",
-  "trl>=0.21",
+  "trl>=1.10.0",
   "datasets>=4.0",
   "accelerate>=1.4",
 ]
