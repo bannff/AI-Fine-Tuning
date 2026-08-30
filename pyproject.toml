@@ -43,7 +43,7 @@ torch = [
 ]
 # Apple Silicon backend. mlx has no Linux wheels, so it must stay optional.
 apple = [
-  "mlx>=0.29",
+  "mlx>=0.32.2",
   "mlx-lm>=0.28",
 ]
 all = ["finetune[torch,apple]"]
