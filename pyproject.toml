@@ -59,7 +59,7 @@ Issues = "https://github.com/bannff/AI-Fine-Tuning/issues"
 [dependency-groups]
 dev = [
   "pytest>=8.0",
-  "hypothesis>=6.100",
+  "hypothesis>=6.167.1",
   "ruff>=0.9",
   "mypy>=1.11",
   "types-pyyaml>=6.0",
