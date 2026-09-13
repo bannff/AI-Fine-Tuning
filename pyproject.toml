@@ -35,7 +35,7 @@ dependencies = ["pyyaml>=6.0"]
 # PyTorch backend: TRL supplies SFT prompt masking / packing, PEFT the adapters.
 torch = [
   "torch>=2.4",
-  "transformers>=4.56.2",
+  "transformers>=5.17.0",
   "peft>=0.15",
   "trl>=0.21",
   "datasets>=4.0",
